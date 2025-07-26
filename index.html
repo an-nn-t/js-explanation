@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JavaScript技術解説 - Modern Web Development Guide</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>JavaScript主要技術ガイド - 基礎からフレームワークまで</title>
+  <link rel="stylesheet" href="main.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="background-pattern"></div>
-  <div class="overlay" id="overlay"></div> <header>
+  <div class="overlay" id="overlay"></div>
+
+  <header>
     <div class="container">
       <div class="header-content">
         <div class="logo">
@@ -18,11 +20,10 @@
           <span>JS Guide</span>
         </div>
         <h1>JavaScript技術解説</h1>
-        <p>JavaScript開発の主要技術とツールの完全ガイド</p>
         <div class="header-stats">
           <div class="stat">
-            <span class="stat-number">15</span>
-            <span class="stat-label">トピック</span>
+            <!-- <span class="stat-number">4</span> -->
+            <h4 class="stat-label">クリックして詳細を確認してください</h4>
           </div>
         </div>
       </div>
@@ -32,550 +33,216 @@
   <main>
     <div class="container">
       <div class="section-header">
-        <h2>学習コンテンツ</h2>
-        <p>基礎から応用まで、体系的に学べるJavaScript技術集</p>
+        <!-- <h2>学習コンテンツ</h2> -->
+        <!-- <p>基礎から応用まで、現代のWeb開発に必須の技術を深く掘り下げます。</p> -->
       </div>
 
       <div class="grid">
         <div class="card featured" id="card-js-basics">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-js-basics');">&times;</button>
+          <button class="close-button">&times;</button>
           <div class="card-icon">
-            <i class="fab fa-js-square"></i>
+            <img src="js-logo.png" alt="JavaScript Logo">
           </div>
-          <h3>JavaScriptの基本構文と特徴</h3>
-          <p>変数宣言、関数、クラス、スコープ、クロージャなど、JavaScriptの基礎的な文法を詳しく解説します。</p>
+          <h3>JavaScriptの基本構文と核心概念</h3>
+          <p>変数、関数、クラスといった基本から、スコープ、クロージャ、thisキーワードの挙動まで、JSの土台となる知識を深く解説します。</p>
           <div class="card-footer">
-            <span class="difficulty beginner">初級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              10分
-            </span>
+            <span class="reading-time"><i class="far fa-clock"></i> 15分</span>
           </div>
-          <div class="card-content" id="js-basics-content"> <div class="content-section">
-              <h4>変数宣言</h4>
-              <pre><code>// ES6の推奨方法
-const userName = "田中太郎";  // 再代入不可
-let userAge = 25;           // 再代入可能
-var oldStyle = "非推奨";     // 古い書き方</code></pre>
+          <div class="card-content">
+            <div class="content-section">
+              <h4>変数宣言: `const`, `let`, `var`</h4>
+              <p>`const`は再代入不可能な定数、`let`は再代入可能な変数を宣言します。どちらもブロックスコープを持ち、意図しない変数の上書きを防ぎます。`var`は関数スコープを持つ古い形式で、現在は推奨されません。</p>
+              <pre><code>// ES2015以降の推奨
+const PI = 3.14; // 再代入不可
+let userAge = 25;   // 再代入可能
+userAge = 26;     // OK
+
+function checkScope() {
+  if (true) {
+    let blockVar = "Visible";
+    const blockConst = "Also visible";
+  }
+  // console.log(blockVar); // ReferenceError
+}</code></pre>
             </div>
             <div class="content-section">
-              <h4>関数の定義</h4>
-              <pre><code>// 関数宣言
-function greet(name) {
-  return `こんにちは、${name}さん！`;
+              <h4>アロー関数と `this`</h4>
+              <p>アロー関数は `function` キーワードよりも簡潔に記述でき、自身の `this` を持ちません。そのため、アロー関数内の `this` は、それが定義された外側のスコープの `this` を参照します。これにより、クラスやコールバック関数内での `this` の扱いが直感的になります。</p>
+              <pre><code>function TraditionalPerson() {
+  this.age = 0;
+  setInterval(function growUp() {
+    // この中の `this` はグローバルオブジェクトを指す(非strictモード)
+    // this.age++; // うまく動かない
+  }, 1000);
 }
 
-// アロー関数
-const add = (a, b) => a + b;</code></pre>
-            </div>
-            <div class="content-section">
-              <h4>クラス</h4>
-              <pre><code>class Person {
-  constructor(name) {
-    this.name = name;
-  }
-
-  sayHello() {
-    return `私は${this.name}です`;
-  }
+function ModernPerson() {
+  this.age = 0;
+  setInterval(() => {
+    // アロー関数は外側の`this`(ModernPersonのインスタンス)を指す
+    this.age++; // 正常に動作
+  }, 1000);
 }</code></pre>
             </div>
           </div>
         </div>
 
         <div class="card" id="card-nodejs">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-nodejs');">&times;</button>
+          <button class="close-button">&times;</button>
           <div class="card-icon">
-            <i class="fab fa-node-js"></i>
+            <img src="nodejs-logo.png" alt="Node.js Logo">
           </div>
-          <h3>Node.jsの概要と活用方法</h3>
-          <p>サーバーサイドでJavaScriptを動かすNode.jsの特徴とCLIアプリやAPI開発への応用例を紹介します。</p>
+          <h3>Node.jsによるサーバーサイド開発</h3>
+          <p>イベント駆動・ノンブロッキングI/Oモデルを特徴とするNode.jsを解説。Expressフレームワークを使った実践的なAPIサーバー構築方法を学びます。</p>
           <div class="card-footer">
-            <span class="difficulty intermediate">中級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              15分
-            </span>
+            <span class="reading-time"><i class="far fa-clock"></i> 20分</span>
           </div>
-          <div class="card-content" id="nodejs-content"> <div class="content-section">
-              <h4>Node.jsとは</h4>
-              <p>Node.jsは、ChromeのV8エンジンを使用してJavaScriptをサーバーサイドで実行する環境です。</p>
+          <div class="card-content">
+            <div class="content-section">
+              <h4>Node.jsのイベントループ</h4>
+              <p>Node.jsはシングルスレッドで動作しますが、イベントループ機構により、時間のかかる処理（ファイルI/OやDBアクセスなど）をノンブロッキングで実行できます。これにより、多くの同時接続を効率的に捌くことが可能です。</p>
             </div>
             <div class="content-section">
-              <h4>基本的な使い方</h4>
-              <pre><code>// package.jsonの作成
-npm init -y
+              <h4>ExpressによるREST API構築</h4>
+              <p>ExpressはNode.jsで最も人気のあるWebフレームワークです。ルーティング、ミドルウェア、リクエスト・レスポンスの処理を容易にし、堅牢なAPIを迅速に開発できます。</p>
+              <pre><code>// 必要なパッケージをインストール: npm install express
+const express = require('express');
+const app = express();
+const port = 3000;
 
-// 簡単なHTTPサーバー
-const http = require('http');
+// JSONリクエストボディを解析するミドルウェア
+app.use(express.json());
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('Hello, Node.js!');
+// GETリクエストへの応答
+app.get('/api/users', (req, res) => {
+  res.json([
+    { id: 1, name: 'Taro' },
+    { id: 2, name: 'Hanako' }
+  ]);
 });
 
-server.listen(3000, () => {
-  console.log('サーバーが起動しました');
+// POSTリクエストへの応答
+app.post('/api/users', (req, res) => {
+  const newUser = req.body;
+  console.log('New user added:', newUser);
+  res.status(201).json(newUser);
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });</code></pre>
             </div>
           </div>
         </div>
 
         <div class="card" id="card-typescript">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-typescript');">&times;</button>
+          <button class="close-button">&times;</button>
           <div class="card-icon">
-            <i class="fas fa-code"></i>
+            <img src="ts-logo.png" alt="TypeScript Logo">
           </div>
-          <h3>TypeScriptの導入と利点</h3>
-          <p>型安全性を向上させるTypeScriptの導入方法と、コードの保守性・予測性を高める利点を紹介します。</p>
+          <h3>TypeScriptによる型安全な開発</h3>
+          <p>JavaScriptに静的型付けを導入するTypeScript。インターフェースやジェネリクスを活用し、大規模開発におけるコードの保守性と品質を高める方法を紹介します。</p>
           <div class="card-footer">
-            <span class="difficulty intermediate">中級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              12分
-            </span>
+            <span class="reading-time"><i class="far fa-clock"></i> 18分</span>
           </div>
-          <div class="card-content" id="typescript-content"> <div class="content-section">
-              <h4>TypeScriptの特徴</h4>
-              <p>TypeScriptは、JavaScriptに型システムを追加した言語で、開発時にエラーを早期発見できます。</p>
+          <div class="card-content">
+            <div class="content-section">
+              <h4>インターフェース (Interface)</h4>
+              <p>オブジェクトが持つべき構造（プロパティやメソッドの型）を定義する機能です。これにより、特定の構造を持つオブジェクトを強制でき、コードの意図が明確になります。</p>
+              <pre><code>interface User {
+  id: number;
+  name: string;
+  email?: string; // `?` はオプショナルなプロパティ
+  getInfo(): string;
+}
+
+const userA: User = {
+  id: 101,
+  name: "Kenji",
+  getInfo() {
+    return `ID: ${this.id}, Name: ${this.name}`;
+  }
+};</code></pre>
             </div>
             <div class="content-section">
-              <h4>基本的な型注釈</h4>
-              <pre><code>// 基本的な型
-let name: string = "太郎";
-let age: number = 30;
-let isStudent: boolean = false;
+              <h4>ジェネリクス (Generics)</h4>
+              <p>ジェネリクスは、特定の型に依存せず、再利用可能なコンポーネント（関数やクラス）を作成するための機能です。使用する際に型を指定することで、型安全性を保ちながら柔軟なコードを書けます。</p>
+              <pre><code>// Tは型引数(Type Parameter)
+function getFirstElement<T>(arr: T[]): T | undefined {
+  return arr[0];
+}
 
-// 配列とオブジェクトの型
-let scores: number[] = [85, 92, 78];
-let user: {name: string, age: number} = {
-  name: "花子",
-  age: 25
-};
+const numbers = [1, 2, 3];
+const firstNumber = getFirstElement(numbers); // firstNumberの型は `number`
 
-// 関数の型
-function greet(name: string): string {
-  return `こんにちは、${name}さん！`;
-}</code></pre>
+const strings = ["a", "b", "c"];
+const firstString = getFirstElement(strings); // firstStringの型は `string`
+</code></pre>
             </div>
           </div>
         </div>
 
         <div class="card" id="card-frameworks">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-frameworks');">&times;</button>
+          <button class="close-button">&times;</button>
           <div class="card-icon">
-            <i class="fab fa-react"></i>
+            <img src="frameworks-logo.png" alt="React and Vue Logos">
           </div>
-          <h3>フレームワーク（React/Vue）</h3>
-          <p>ReactやVue.jsなどの人気フレームワークの概要と、それぞれの特徴や応用例を詳しく解説します。</p>
+          <h3>React & Vue.js フレームワーク</h3>
+          <p>コンポーネント指向のUI開発を牽引するReactとVue。それぞれの思想、仮想DOMの仕組み、状態管理の基本を比較しながら、実践的な使い方を解説します。</p>
           <div class="card-footer">
-            <span class="difficulty advanced">上級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              20分
-            </span>
+            <span class="reading-time"><i class="far fa-clock"></i> 25分</span>
           </div>
-          <div class="card-content" id="frameworks-content"> <div class="content-section">
-              <h4>Reactの基本</h4>
-              <pre><code>// 関数コンポーネント
+          <div class="card-content">
+            <div class="content-section">
+              <h4>React: 宣言的UIと仮想DOM</h4>
+              <p>ReactはUIを「状態の関数」として捉えます。状態(state)が変わると、Reactが効率的に差分を計算（仮想DOMを利用）し、実際のDOMに必要な変更のみを適用します。これにより、パフォーマンスの高いUIが実現されます。</p>
+              <pre><code>// 親から子へデータを渡す `props`
 function Welcome(props) {
   return &lt;h1&gt;こんにちは、{props.name}さん！&lt;/h1&gt;;
 }
 
-// useState Hook
+// 自身の状態を管理する `useState`
 import { useState } from 'react';
 
 function Counter() {
   const [count, setCount] = useState(0);
-
   return (
     &lt;div&gt;
-      &lt;p&gt;カウント: {count}&lt;/p&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
       &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
-        増加
+        Increase
       &lt;/button&gt;
     &lt;/div&gt;
   );
 }</code></pre>
             </div>
             <div class="content-section">
-              <h4>Vue.jsの基本</h4>
-              <pre><code>// Vue 3のComposition API
-import { ref } from 'vue';
+              <h4>Vue.js: リアクティブなデータバインディング</h4>
+              <p>VueはデータとDOMを「リアクティブ」に結びつけます。JavaScriptオブジェクトの状態を変更するだけで、関連するDOMが自動的に更新されるのが大きな特徴です。シンプルで学習しやすい文法も魅力です。</p>
+              <pre><code>&lt;!-- Vue Template --&gt;
+&lt;div id="app"&gt;
+  &lt;p&gt;{{ message }}&lt;/p&gt;
+  &lt;p&gt;Count: {{ count }}&lt;/p&gt;
+  &lt;button @click="increment"&gt;Increase&lt;/button&gt;
+&lt;/div&gt;
 
-export default {
-  setup() {
-    const count = ref(0);
+&lt;!-- Vue Script (Composition API) --&gt;
+&lt;script&gt;
+  import { ref, computed } from 'vue';
 
-    const increment = () => {
-      count.value++;
-    };
+  export default {
+    setup() {
+      const count = ref(0);
+      const message = computed(() => `現在のカウントは${count.value}です。`);
 
-    return {
-      count,
-      increment
-    };
-  }
-};</code></pre>
-            </div>
-          </div>
-        </div>
+      function increment() {
+        count.value++;
+      }
 
-        <div class="card" id="card-data-fetching">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-data-fetching');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-exchange-alt"></i>
-          </div>
-          <h3>データ取得（Axios/Fetch API）</h3>
-          <p>REST APIからデータを取得するためのAxiosとFetch APIの使い方と違いを実例とともに説明します。</p>
-          <div class="card-footer">
-            <span class="difficulty intermediate">中級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              8分
-            </span>
-          </div>
-          <div class="card-content" id="data-fetching-content"> <div class="content-section">
-              <h4>Fetch APIの例</h4>
-              <pre><code>fetch('https://api.example.com/data')
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error:', error));</code></pre>
-            </div>
-            <div class="content-section">
-              <h4>Axiosの例 (インストールが必要です)</h4>
-              <pre><code>// npm install axios
-import axios from 'axios';
-
-axios.get('https://api.example.com/data')
-  .then(response => console.log(response.data))
-  .catch(error => console.error('Error:', error));</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-async">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-async');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-sync-alt"></i>
-          </div>
-          <h3>非同期処理（Promise/async-await）</h3>
-          <p>非同期処理の基本であるPromiseと、より読みやすいasync/await構文を実用的な例で解説します。</p>
-          <div class="card-footer">
-            <span class="difficulty intermediate">中級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              14分
-            </span>
-          </div>
-          <div class="card-content" id="async-content"> <div class="content-section">
-              <h4>Promiseの基本</h4>
-              <pre><code>// Promise の作成
-const fetchData = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("データを取得しました");
-    }, 1000);
-  });
-};
-
-// Promise の使用
-fetchData()
-  .then(data => console.log(data))
-  .catch(error => console.error(error));</code></pre>
-            </div>
-            <div class="content-section">
-              <h4>async/await</h4>
-              <pre><code>// async/await を使用した書き方
-async function getData() {
-  try {
-    const data = await fetchData();
-    console.log(data);
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// 複数の非同期処理
-async function multipleRequests() {
-  const [user, posts] = await Promise.all([
-    fetchUser(),
-    fetchPosts()
-  ]);
-
-  return { user, posts };
-}</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-dom-events">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-dom-events');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-mouse-pointer"></i>
-          </div>
-          <h3>DOM操作とイベントハンドリング</h3>
-          <p>HTML要素の操作、イベントの登録・発火など、インタラクティブなWebページ作成の基本を紹介します。</p>
-          <div class="card-footer">
-            <span class="difficulty beginner">初級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              11分
-            </span>
-          </div>
-          <div class="card-content" id="dom-events-content"> <div class="content-section">
-              <h4>要素の取得と操作</h4>
-              <pre><code>const myElement = document.getElementById('myId');
-myElement.textContent = '新しいテキスト';
-myElement.style.color = 'blue';</code></pre>
-            </div>
-            <div class="content-section">
-              <h4>イベントリスナー</h4>
-              <pre><code>const myButton = document.getElementById('myButton');
-myButton.addEventListener('click', () => {
-  alert('ボタンがクリックされました！');
-});</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-webpack-babel">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-webpack-babel');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-cube"></i>
-          </div>
-          <h3>WebpackとBabel</h3>
-          <p>モジュールバンドラーのWebpackとトランスパイラのBabelを使った効率的なビルド環境の構築方法を解説します。</p>
-          <div class="card-footer">
-            <span class="difficulty advanced">上級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              18分
-            </span>
-          </div>
-          <div class="card-content" id="webpack-babel-content"> <div class="content-section">
-              <h4>Webpackの役割</h4>
-              <p>Webpackは、複数のJavaScriptファイルやその他のアセットを1つにバンドルするためのツールです。</p>
-            </div>
-            <div class="content-section">
-              <h4>Babelの役割</h4>
-              <p>Babelは、新しいJavaScriptのコードを古いブラウザでも動作するように変換（トランスパイル）します。</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-testing-frameworks">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-testing-frameworks');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-vial"></i>
-          </div>
-          <h3>テストフレームワーク（Jest/Mocha）</h3>
-          <p>JestやMochaなどのテストツールでユニットテストを書く方法とTDD開発手法への活用法を紹介します。</p>
-          <div class="card-footer">
-            <span class="difficulty intermediate">中級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              16分
-            </span>
-          </div>
-          <div class="card-content" id="testing-frameworks-content"> <div class="content-section">
-              <h4>Jestの基本的なテスト</h4>
-              <pre><code>// sum.js
-function sum(a, b) {
-  return a + b;
-}
-module.exports = sum;
-
-// sum.test.js
-const sum = require('./sum');
-
-test('adds 1 + 2 to equal 3', () => {
-  expect(sum(1, 2)).toBe(3);
-});</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-libraries">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-libraries');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-puzzle-piece"></i>
-          </div>
-          <h3>サードパーティライブラリの活用</h3>
-          <p>LodashやMoment.jsなど、開発効率を向上させる便利なユーティリティライブラリの使い方を紹介します。</p>
-          <div class="card-footer">
-            <span class="difficulty beginner">初級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              9分
-            </span>
-          </div>
-          <div class="card-content" id="libraries-content"> <div class="content-section">
-              <h4>Lodashの例</h4>
-              <pre><code>// npm install lodash
-import _ from 'lodash';
-
-const array = [1, 2, 3];
-const shuffledArray = _.shuffle(array);
-console.log(shuffledArray);</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-pwa">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-pwa');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-mobile-alt"></i>
-          </div>
-          <h3>PWA（Progressive Web Apps）</h3>
-          <p>オフライン対応やホーム画面追加が可能なPWAの作成方法とモバイルファーストな開発について説明します。</p>
-          <div class="card-footer">
-            <span class="difficulty advanced">上級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              22分
-            </span>
-          </div>
-          <div class="card-content" id="pwa-content"> <div class="content-section">
-              <h4>Service Workerの登録</h4>
-              <pre><code>if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('SW registered: ', registration);
-      })
-      .catch(registrationError => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  });
-}</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-websocket">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-websocket');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-bolt"></i>
-          </div>
-          <h3>WebSocketによるリアルタイム通信</h3>
-          <p>チャットや通知など、リアルタイムなデータ通信を可能にするWebSocketの実装方法を解説します。</p>
-          <div class="card-footer">
-            <span class="difficulty advanced">上級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              19分
-            </span>
-          </div>
-          <div class="card-content" id="websocket-content"> <div class="content-section">
-              <h4>WebSocketクライアントの例</h4>
-              <pre><code>const socket = new WebSocket('ws://localhost:8080');
-
-socket.onopen = (event) => {
-  console.log('WebSocket接続が開かれました');
-  socket.send('こんにちは、サーバー！');
-};
-
-socket.onmessage = (event) => {
-  console.log('サーバーからのメッセージ:', event.data);
-};
-
-socket.onclose = (event) => {
-  console.log('WebSocket接続が閉じられました');
-};
-
-socket.onerror = (error) => {
-  console.error('WebSocketエラー:', error);
-};</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-graphics">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-graphics');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-palette"></i>
-          </div>
-          <h3>グラフィックス処理</h3>
-          <p>Canvas APIやWebGLを使用し、三角関数や線形代数で動的な図形を描画する高度な技法を紹介します。</p>
-          <div class="card-footer">
-            <span class="difficulty advanced">上級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              25分
-            </span>
-          </div>
-          <div class="card-content" id="graphics-content"> <div class="content-section">
-              <h4>Canvas APIで四角形を描画</h4>
-              <pre><code>const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
-
-ctx.fillStyle = 'green';
-ctx.fillRect(10, 10, 150, 100);</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-performance">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-performance');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-tachometer-alt"></i>
-          </div>
-          <h3>パフォーマンス最適化</h3>
-          <p>不要なループ処理の削減、関数のメモ化、描画の最適化など、実用的な高速化テクニックを紹介します。</p>
-          <div class="card-footer">
-            <span class="difficulty advanced">上級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              17分
-            </span>
-          </div>
-          <div class="card-content" id="performance-content"> <div class="content-section">
-              <h4>メモ化の例</h4>
-              <pre><code>function memoize(func) {
-  const results = {};
-  return (...args) => {
-    const argsKey = JSON.stringify(args);
-    if (!results[argsKey]) {
-      results[argsKey] = func(...args);
+      return { count, message, increment };
     }
-    return results[argsKey];
   };
-}
-
-const expensiveFunction = (num) => {
-  console.log('Calculating...');
-  return num * 2;
-};
-
-const memoizedExpensiveFunction = memoize(expensiveFunction);
-console.log(memoizedExpensiveFunction(5)); // Calculates
-console.log(memoizedExpensiveFunction(5)); // Uses cached result</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="card-cross-browser">
-          <button class="close-button" onclick="event.stopPropagation(); toggleCardExpansion('card-cross-browser');">&times;</button>
-          <div class="card-icon">
-            <i class="fas fa-globe"></i>
-          </div>
-          <h3>クロスブラウザ対応</h3>
-          <p>主要なブラウザで動作するJavaScriptを書くためのベストプラクティスや互換性チェック方法を解説します。</p>
-          <div class="card-footer">
-            <span class="difficulty intermediate">中級</span>
-            <span class="reading-time">
-              <i class="far fa-clock"></i>
-              13分
-            </span>
-          </div>
-          <div class="card-content" id="cross-browser-content"> <div class="content-section">
-              <h4>機能検出の例</h4>
-              <pre><code>if (window.innerWidth) {
-  // window.innerWidth をサポートするブラウザでの処理
-} else {
-  // その他のブラウザでの処理
-}</code></pre>
+&lt;/script&gt;</code></pre>
             </div>
           </div>
         </div>
@@ -587,91 +254,17 @@ console.log(memoizedExpensiveFunction(5)); // Uses cached result</code></pre>
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <h4>JavaScript Tech Guide</h4>
-          <p>Web開発技術を学ぶための総合リソース</p>
-        </div>
-        <div class="footer-section">
-          <h4>学習レベル</h4>
-          <ul>
-            <li><span class="difficulty-mini beginner">初級</span> 基礎から始める</li>
-            <li><span class="difficulty-mini intermediate">中級</span> 実践的な技術</li>
-            <li><span class="difficulty-mini advanced">上級</span> 高度なテクニック</li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>フォロー</h4>
-          <div class="social-links">
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-          </div>
+          <h4>本コンテンツの作成時間:6時間</h4>
+
         </div>
       </div>
-      <div class="footer-bottom">
+      <!-- <div class="footer-bottom">
         <p>&copy; 2025 JavaScript Tech Guide. All rights reserved.</p>
-      </div>
+
+      </div> -->
     </div>
   </footer>
-  <script>
-    function toggleCardExpansion(cardId) {
-      const card = document.getElementById(cardId);
-      const content = card.querySelector('.card-content');
-      const overlay = document.getElementById('overlay');
-      const body = document.body;
-      const closeButton = card.querySelector('.close-button');
 
-      // Check if the clicked card is already expanded
-      const isExpanded = card.classList.contains('expanded');
-
-      // Close any other open cards first, unless it's the current card being closed
-      document.querySelectorAll('.card.expanded').forEach(expandedCard => {
-        if (expandedCard.id !== cardId) {
-          expandedCard.classList.remove('expanded');
-          expandedCard.querySelector('.card-content').classList.remove('active');
-          expandedCard.querySelector('.close-button').style.opacity = '0';
-          expandedCard.querySelector('.close-button').style.visibility = 'hidden';
-        }
-      });
-
-      // Toggle the 'expanded' class on the clicked card
-      // If it's already expanded, we are closing it, so toggle to false (remove class)
-      // If it's not expanded, we are opening it, so toggle to true (add class)
-      card.classList.toggle('expanded', !isExpanded);
-      content.classList.toggle('active', !isExpanded);
-      overlay.classList.toggle('active', !isExpanded);
-
-      // Toggle body scrollability
-      body.classList.toggle('no-scroll', !isExpanded);
-
-      // Toggle visibility of close button
-      if (!isExpanded) { // If card is about to be expanded
-        closeButton.style.opacity = '1';
-        closeButton.style.visibility = 'visible';
-      } else { // If card is about to be closed
-        closeButton.style.opacity = '0';
-        closeButton.style.visibility = 'hidden';
-      }
-    }
-
-    // Attach click listener to each card to trigger expansion
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function(event) {
-            // Prevent toggling if a link, button, or pre/code element inside the card is clicked
-            // This ensures that copying code or interacting with other elements inside doesn't close the card
-            if (event.target.closest('a') || event.target.closest('button') || event.target.closest('pre') || event.target.closest('code')) {
-                return;
-            }
-            toggleCardExpansion(this.id);
-        });
-    });
-
-    // Close card when clicking outside (on overlay)
-    document.getElementById('overlay').addEventListener('click', function() {
-      const expandedCard = document.querySelector('.card.expanded');
-      if (expandedCard) {
-        toggleCardExpansion(expandedCard.id);
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
