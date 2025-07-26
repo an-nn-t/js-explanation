@@ -1,64 +1,59 @@
 // script.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    const allCards = document.querySelectorAll('.card');
-    const overlay = document.getElementById('overlay');
-    const body = document.body;
+// Navigation functionality
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('open');
+}
 
-    // 現在開いているカードを追跡する変数
-    let currentlyExpandedCard = null;
+// Smooth scrolling and active state management
+document.addEventListener('DOMContentLoaded', function() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.content-section');
 
-    /**
-     * 指定されたカードを開く関数
-     * @param {HTMLElement} card - 対象のカード要素
-     */
-    function expandCard(card) {
-        // 他に開いているカードがあれば閉じる
-        if (currentlyExpandedCard && currentlyExpandedCard !== card) {
-            collapseCard(currentlyExpandedCard);
-        }
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
 
-        card.classList.add('expanded');
-        overlay.classList.add('active');
-        body.classList.add('no-scroll');
-        currentlyExpandedCard = card;
-    }
+            // Update active state
+            navItems.forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
 
-    /**
-     * 指定されたカードを閉じる関数
-     * @param {HTMLElement} card - 対象のカード要素
-     */
-    function collapseCard(card) {
-        card.classList.remove('expanded');
-        overlay.classList.remove('active');
-        body.classList.remove('no-scroll');
-        currentlyExpandedCard = null;
-    }
+            // Close mobile menu
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        });
+    });
 
-    // 各カードにクリックイベントを設定
-    allCards.forEach(card => {
-        card.addEventListener('click', function(event) {
-            // カード自身がクリックされ、かつ展開されていない場合のみ展開する
-            // 既に展開されているカード内でのクリックや、閉じるボタンのクリックは無視する
-            if (!this.classList.contains('expanded') && !event.target.closest('.close-button')) {
-                expandCard(this);
+    // Scroll spy functionality
+    function updateActiveNav() {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop <= 100) {
+                current = section.getAttribute('id');
             }
         });
 
-        // 各カード内の閉じるボタンにイベントを設定
-        const closeButton = card.querySelector('.close-button');
-        if (closeButton) {
-            closeButton.addEventListener('click', (event) => {
-                event.stopPropagation(); // 親要素(カード)へのイベント伝播を停止
-                collapseCard(card);
+        if (current) {
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
             });
         }
-    });
+    }
 
-    // オーバーレイをクリックしたときにカードを閉じる
-    overlay.addEventListener('click', () => {
-        if (currentlyExpandedCard) {
-            collapseCard(currentlyExpandedCard);
-        }
-    });
+    window.addEventListener('scroll', updateActiveNav);
 });
